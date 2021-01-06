@@ -117,6 +117,28 @@ const request8 = client.search({
     }
 })
 
+const request9 = client.search({
+    index: 'person',
+    body: {
+        query: {
+            bool: {
+                must: {
+                    match_all: {}
+                },
+                filter: {
+                    geo_distance: {
+                        distance: "10km",
+                        location: {
+                            lat: 48.8534,
+                            lon: 2.3488
+                        }
+                    }
+                }
+            }
+        }
+    }
+})
+
 
 function formatRequest5(bucket){
     let res = ''
@@ -173,4 +195,7 @@ request7
     .catch(err => console.log(err))
 request8
     .then(result => console.log(`* Nombre de personne qui ont plus de 20ans et dont le balance est comprise entre 1000 et 2000:\n ${result.body.hits.total.value}`))
+    .catch(err => console.log(err))
+request9
+    .then(result => console.log(`* Nombre de personne qui sont à 10km de Paris:\n ${result.body.hits.total.value}`))
     .catch(err => console.log(err))
